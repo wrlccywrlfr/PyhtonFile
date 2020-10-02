@@ -10,7 +10,7 @@ import sympy as sym
 import csv
 import pandas as pd
 import numpy as np
-import math
+import math 
 from sympy.plotting import plot
 from sympy import sin, cos, tan, log, exp
 sym.init_printing(use_unicode=True)
