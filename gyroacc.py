@@ -25,17 +25,17 @@ Acc_data_z = []
 data_z_1 = []
 data = []
 
-df = pd.read_csv('20200804gyro_27.csv')
+df = pd.read_csv('filename')
 
 #gyroセンサの値を格納
-with open("20200804gyro_27.csv") as f:#ラジアンで格納されている(rad/s)
+with open("filename") as f:#ラジアンで格納されている(rad/s)
     for row in csv.reader(f, quoting=csv.QUOTE_NONNUMERIC):
         gyro_data_x.append(row[0])#x座標
         gyro_data_y.append(row[1])#y座標
         gyro_data_z.append(row[2])#z座標
 
 #Accセンサの値を格納
-with open("20200916-Fr-acc.csv") as f:
+with open("filename") as f:
     for Arow in csv.reader(f, quoting = csv.QUOTE_NONNUMERIC):
         Acc_data_x.append(Arow[0])#x座標(スマホの横向き)
         Acc_data_y.append(Arow[1])#y座標(進行方向)
