@@ -4,8 +4,6 @@ Created on Tue Sep 22 08:54:37 2020
 
 @author: daisu
 """
-
-
 import sympy as sym
 import csv
 import pandas as pd
@@ -15,6 +13,9 @@ from sympy.plotting import plot
 from sympy import sin, cos, tan, log, exp
 sym.init_printing(use_unicode=True)
 #% matplotlib inline
+
+
+
 a, b, c, x, y = sym.symbols("a b c x y")
 gyro_data_x=[]
 gyro_data_y=[]
@@ -25,7 +26,9 @@ Acc_data_z = []
 data_z_1 = []
 data = []
 
-df = pd.read_csv('filename')
+filename = "filename"
+
+df = pd.read_csv(filename)
 
 #gyroセンサの値を格納
 with open("filename") as f:#ラジアンで格納されている(rad/s)
