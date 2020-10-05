@@ -6,7 +6,7 @@ from scipy.signal import find_peaks
 
 t = []
 y = []
-with open('./data1/mem-b-20200930-115313483.csv') as f:
+with open('./data1/d-12.5-1.csv') as f:
 
     reader = csv.reader(f)
     #next(reader)
