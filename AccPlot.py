@@ -38,14 +38,28 @@ def plot():
 
 
 
-# def analysis():
-#     AccX = []
-#     with open('./deta1/'+filename) as f:
-#         readline = csv.reader(f)
-#         for row in readline:
-#             if row [0] == "ags":
-#                 AccX.append = (float(row[1]))
+def analysis():
+    AccX = []
+    AccY = []
+    AccZ = []
+    GyroX = []
+    GyroY = []
+    GyroZ = []
+    n = 0
+    with open('./deta1/'+filename) as f:
+        readline = csv.reader(f)
+        for row in readline:
+            if row [0] == "ags":
+                AccX.append = (float(row[2]))
+                AccY.append = (float(row[3]))
+                AccY.append = (float(row[4]))
+                GyroX.append = (float(row[5]))
+                GyroY.append = (float(row[6]))
+                GyroZ.append = (float(row[7]))
+
         
+            
+
 
                     
 def main():
