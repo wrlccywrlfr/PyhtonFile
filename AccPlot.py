@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy import signal
 from scipy.signal import find_peaks
 
-filename = 'd-12.5-1.csv'
+filename = './data1/d-12.5-1A.csv'
 
 def SourcePlot():#グラフの表示
     fig = plt.figure()
@@ -13,7 +13,7 @@ def SourcePlot():#グラフの表示
     ax2 = fig.add_subplot(2, 2, 2)
     #ax3 = fig.add_subplot(2, 2, 3)
     #ax4 = fig.add_subplot(2, 2, 4)
-    with open('./data1/'+ filename) as f:
+    with open(filename) as f:
         t = []
         y = []
         ti = []
@@ -25,12 +25,13 @@ def SourcePlot():#グラフの表示
         #next(reader)
 
         for row in reader:
-            if row[0] == "ags":
-                t.append(float(row[1]))
-                y.append(float(row[2]))
-                gy.append(float(row[7]))
-                time.append(a)
-                a = a + 1
+            if row[0] == "1":
+                if row[1] == "ags":
+                    t.append(float(row[2]))
+                    y.append(float(row[3]))
+                    gy.append(float(row[8]))
+                    time.append(a)
+                    a = a + 1
 
 
 
@@ -40,47 +41,47 @@ def SourcePlot():#グラフの表示
 
 
 
-def analysis(): #1000切ったらスタート
-    AccX = []
-    AccY = []
-    AccZ = []
-    GyroX = []
-    GyroY = []
-    GyroZ = []
-    n = 0
+# def analysis(): #1000切ったらスタート
+#     AccX = []
+#     AccY = []
+#     AccZ = []
+#     GyroX = []
+#     GyroY = []
+#     GyroZ = []
+#     n = 0
 
-    with open('./deta1/'+ filename) as f:
-        readline = csv.reader(f)
-        for row in readline:
-            if row [0] == "ags":
-                AccX.append = row
+#     with open('./deta1/'+ filename) as f:
+#         readline = csv.reader(f)
+#         for row in readline:
+#             if row [0] == "ags":
+#                 AccX.append = row
             
-            print(AccX)
-                # AccX.append = (float(row[2]))
-                # AccY.append = (float(row[3]))
-                # AccY.append = (float(row[4]))
-                # GyroX.append = (float(row[5]))
-                # GyroY.append = (float(row[6]))
-                # GyroZ.append = (float(row[7]))
+#             print(AccX)
+#                 # AccX.append = (float(row[2]))
+#                 # AccY.append = (float(row[3]))
+#                 # AccY.append = (float(row[4]))
+#                 # GyroX.append = (float(row[5]))
+#                 # GyroY.append = (float(row[6]))
+#                 # GyroZ.append = (float(row[7]))
 
-        # for lenge in AccX:
-        #     if lenge > 1000:
-        #         AccX = AccX[1:]
-        #     if lenge <=1000:
-        #         break
+#         # for lenge in AccX:
+#         #     if lenge > 1000:
+#         #         AccX = AccX[1:]
+#         #     if lenge <=1000:
+#         #         break
 
-        # for lengs in AccX:
-        #     if lengs < 6000:
+#         # for lengs in AccX:
+#         #     if lengs < 6000:
 
-        #     if lengs >= 6000:
-        #         break 
+#         #     if lengs >= 6000:
+#         #         break 
         
 
 
                     
 def main():
-    #SourcePlot()
-    analysis()
+    SourcePlot()
+    #analysis()
 
 if __name__ == "__main__":
     main()
