@@ -6,7 +6,7 @@ from scipy.signal import find_peaks
 
 filename = 'd-12.5-1.csv'
 
-def plot():
+def SourcePlot():#グラフの表示
     fig = plt.figure()
 
     ax1 = fig.add_subplot(2, 2, 1)
@@ -18,7 +18,8 @@ def plot():
         y = []
         ti = []
         gy = []
-
+        time = []
+        a = 0
         reader = csv.reader(f)
         #next(reader)
         #next(reader)
@@ -26,19 +27,20 @@ def plot():
         for row in reader:
             if row[0] == "ags":
                 t.append(float(row[1]))
-                ti.append(float(row[1]))
                 y.append(float(row[2]))
                 gy.append(float(row[7]))
+                time.append(a)
+                a = a + 1
 
 
 
-    ax1.plot(t, y)
-    ax2.plot(ti, gy)
+    ax1.plot(time, y)
+    ax2.plot(time, gy)
     plt.show()
 
 
 
-def analysis():
+def analysis(): #1000切ったらスタート
     AccX = []
     AccY = []
     AccZ = []
@@ -46,25 +48,39 @@ def analysis():
     GyroY = []
     GyroZ = []
     n = 0
-    with open('./deta1/'+filename) as f:
+
+    with open('./deta1/'+ filename) as f:
         readline = csv.reader(f)
         for row in readline:
             if row [0] == "ags":
-                AccX.append = (float(row[2]))
-                AccY.append = (float(row[3]))
-                AccY.append = (float(row[4]))
-                GyroX.append = (float(row[5]))
-                GyroY.append = (float(row[6]))
-                GyroZ.append = (float(row[7]))
-
-        
+                AccX.append = row
             
+            print(AccX)
+                # AccX.append = (float(row[2]))
+                # AccY.append = (float(row[3]))
+                # AccY.append = (float(row[4]))
+                # GyroX.append = (float(row[5]))
+                # GyroY.append = (float(row[6]))
+                # GyroZ.append = (float(row[7]))
+
+        # for lenge in AccX:
+        #     if lenge > 1000:
+        #         AccX = AccX[1:]
+        #     if lenge <=1000:
+        #         break
+
+        # for lengs in AccX:
+        #     if lengs < 6000:
+
+        #     if lengs >= 6000:
+        #         break 
+        
 
 
                     
 def main():
-    plot()
-
+    #SourcePlot()
+    analysis()
 
 if __name__ == "__main__":
     main()
