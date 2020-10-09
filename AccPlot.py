@@ -1,10 +1,14 @@
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 from scipy import signal
 from scipy.signal import find_peaks
 
 filename = './data1/d-12.5-1A.csv'
+AccX = []
+GyroZ = []
+
 
 def SourcePlot():#グラフの表示
     fig = plt.figure()
@@ -15,9 +19,9 @@ def SourcePlot():#グラフの表示
     #ax4 = fig.add_subplot(2, 2, 4)
     with open(filename) as f:
         t = []
-        y = []
+        #y = []
         ti = []
-        gy = []
+        #gy = []
         time = []
         a = 0
         reader = csv.reader(f)
@@ -28,60 +32,74 @@ def SourcePlot():#グラフの表示
             if row[0] == "1":
                 if row[1] == "ags":
                     t.append(float(row[2]))
-                    y.append(float(row[3]))
-                    gy.append(float(row[8]))
+                    AccX.append(float(row[3]))
+                    GyroZ.append(float(row[8]))
                     time.append(a)
                     a = a + 1
 
 
 
-    ax1.plot(time, y)
-    ax2.plot(time, gy)
+    ax1.plot(time, AccX)
+    ax2.plot(time, GyroZ)
     plt.show()
 
 
 
-# def analysis(): #1000切ったらスタート
-#     AccX = []
-#     AccY = []
-#     AccZ = []
-#     GyroX = []
-#     GyroY = []
-#     GyroZ = []
-#     n = 0
+def Analysis(): #1000切ったらスタート
+    n = 0
+    OldAcc = 0
+    OldSpeed = 0
+    Olddistance = 0
+    OldAngle = 0
+    TimeSpan = 0.001
+    Speed = 0
+    Angle = 0
+    Distance = 0
+    num = 0
+    dis = 0
+    SumDistance = 0
+    SumAngle = 0
 
-#     with open('./deta1/'+ filename) as f:
-#         readline = csv.reader(f)
-#         for row in readline:
-#             if row [0] == "ags":
-#                 AccX.append = row
-            
-#             print(AccX)
-#                 # AccX.append = (float(row[2]))
-#                 # AccY.append = (float(row[3]))
-#                 # AccY.append = (float(row[4]))
-#                 # GyroX.append = (float(row[5]))
-#                 # GyroY.append = (float(row[6]))
-#                 # GyroZ.append = (float(row[7]))
+    with open(filename) as f:
+        reader = csv.reader(f)
+        for row in reader:
+            if row[0] == "1":
+                if row[1] == "ags":
+                    AccX.append(float(row[3]))
+                    GyroZ.append(float(row[8]))
 
-#         # for lenge in AccX:
-#         #     if lenge > 1000:
-#         #         AccX = AccX[1:]
-#         #     if lenge <=1000:
-#         #         break
+    for AccValue in AccX:
+        #速度計算
+        Speed = ((OldAcc + AccValue) * TimeSpan) /2 
+        OldAcc = AccValue
 
-#         # for lengs in AccX:
-#         #     if lengs < 6000:
+        #距離計算
+        Distance = ((Speed + OldSpeed) * TimeSpan) /2 #瞬間の距離
+        OldSpeed = Speed
 
-#         #     if lengs >= 6000:
-#         #         break 
+        #角度推定
+        GyroValue = GyroZ[num]
+        num += 1
+        #度数法をラジアンに変換
+        GyroValue = math.radians(GyroValue)
+        #角度計算
+        Angle = ((OldAngle + GyroValue) *TimeSpan) /2
+        #角度加算
+        OldAngle = SumAngle
+        SumAngle += Angle
         
 
+        dis = Distance/math.cos(SumAngle)  
+        SumDistance = SumDistance + dis
+        #print(SumDistance)
 
+    
+    SumDistance = SumDistance
+    print(SumDistance)
                     
 def main():
-    SourcePlot()
-    #analysis()
+    #SourcePlot()
+    Analysis()
 
 if __name__ == "__main__":
     main()
