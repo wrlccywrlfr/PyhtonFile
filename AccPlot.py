@@ -108,29 +108,35 @@ def Analysis(): #距離推定の計算
 
 def GyroIntegral():
     GyroCheck = []
+    GyroPlot = []
     AngleValue = 0
     number = 0
     OldAng = 0
     TimeSpan_2 = 0.001
     SumAngle_2 = 0
+    t = 0
 
     for AngleValue in GyroZ:    
         #角度推定
         #度数法をラジアンに変換
         AngleValue = AngleValue * 0.01 #0.01Dps
-        #AngleValue = math.radians(AngleValue)#DPSだから度数法
+        AngleValue = math.radians(AngleValue)#DPSだから度数法
         #角度計算
         AngleAnsor = ((OldAng + AngleValue) *TimeSpan_2) /2 
         #角度加算
-        OldAng = AngleAnsor
+        OldAng = AngleValue
         SumAngle_2 += AngleAnsor
+        t += 1
+        GyroPlot.append(float(SumAngle_2))
 
+    plt.plot(t, GyroPlot)
+    plt.show
     print (SumAngle_2)
 
 def main():
     #SourcePlot()
-    Analysis()
-    #GyroIntegral()
+    #Analysis()
+    GyroIntegral()
 
 if __name__ == "__main__":
     main()
