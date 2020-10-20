@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import math
 from scipy import signal
 from scipy.signal import find_peaks
-filename_Source = './data3/d-12.5-2.csv'
+filename_Source = './data4/a-12.5-2.csv'
 filename = './data1_arrange/c-12.5-1.csv'
 AccX = []
 AccY = []
@@ -114,7 +114,9 @@ def GyroIntegral():
     OldAng = 0
     TimeSpan_2 = 0.001
     SumAngle_2 = 0
-    t = 0
+    t = []
+    count = 0
+    #fig = plt.figure()
 
     for AngleValue in GyroZ:    
         #角度推定
@@ -126,17 +128,18 @@ def GyroIntegral():
         #角度加算
         OldAng = AngleValue
         SumAngle_2 += AngleAnsor
-        t += 1
-        GyroPlot.append(float(SumAngle_2))
+        count = count + 1
+        t.append(count)
+        GyroPlot.append(SumAngle_2)
 
     plt.plot(t, GyroPlot)
-    plt.show
-    print (SumAngle_2)
+    plt.show()
+    print(SumAngle_2)
 
 def main():
-    #SourcePlot()
+    SourcePlot()
     #Analysis()
-    GyroIntegral()
+    #GyroIntegral()
 
 if __name__ == "__main__":
     main()
