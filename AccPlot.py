@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import math
 from scipy import signal
 from scipy.signal import find_peaks
-filename_Source = './data4/a-12.5-2.csv'
-filename = './data1_arrange/c-12.5-1.csv'
+filename_Source = './data2/b-12.5-1.csv'
+filename = './data4_arrange/a-12.5-2.csv'
 AccX = []
 AccY = []
 AccZ = []
@@ -54,31 +54,50 @@ def SourcePlot():#データのプロット
     ax2.plot(time, DataGZ)
     plt.show()
 
+def Plot():
+    plt.plot(GyroZ)
+    plt.show()
+
+
 def Analysis(): #距離推定の計算
+    SpeedSum = []
+    AngleSum = []
+    SpeedSum_1 = []
+    SpeedFront = []
+    DistanceFront = []
+    SumDistance = 0
+    Ansor = []
+    Ansor_Dis = 0
     n = 0
     OldAcc = 0
     OldSpeed = 0
-    Olddistance = 0
     OldAngle = 0
+    OldDistance = 0
+    distance = 0
     TimeSpan = 0.001
+    Sp = 0
+    Gy = 0
     Speed = 0
+    SpeedValue = 0
+    S = 0
+    SumSpeed = 0
+    SumSp = 0
     Angle = 0
-    Distance = 0
     num = 0
-    dis = 0
-    SumDistance = 0
     SumAngle = 0
     count = 0
+    Front = 0
+    X = 0
+    Y = 0
+    dis = 0
 
     for AccValue in AccX:
         #速度計算
         AccValue = AccValue * (9.8/10000)
         Speed = ((OldAcc + AccValue) * TimeSpan) /2 
-        OldAcc = AccValue #現在の加速度を保存
-
-        #距離計算
-        Distance = ((Speed + OldSpeed) * TimeSpan) /2 #瞬間の距離
-        OldSpeed += Speed #現在の速度を保存(速度は加算？)
+        OldAcc = AccValue
+        SumSpeed += Speed 
+        SpeedSum.append(SumSpeed)#速度変化を保存
 
         #角度推定
         GyroValue = GyroZ[num]
@@ -91,15 +110,30 @@ def Analysis(): #距離推定の計算
         #角度加算
         OldAngle = GyroValue
         SumAngle += Angle
-        
+        AngleSum.append(SumAngle)
 
-        dis = Distance/math.cos(SumAngle) #瞬間の距離
-        SumDistance += dis #距離の加算
+    for SpeedValue in SpeedSum:#直線の距離にして保存
+        Gy = AngleSum[n]
+        Sp = math.cos(Gy) * SpeedValue
+        dis = ((Sp + OldSpeed)*TimeSpan)/2 #距離計算
+        OldSpeed = Sp
+        SumDistance += dis#ノイズありの直線の距離
+        DistanceFront.append(dis)
+        n += 1
+  
+    for Front in DistanceFront:
+        X = 25*(Front/SumDistance)
+        distance = X / math.cos(AngleSum[count])
+        Ansor_Dis += distance 
+        count += 1
+        Y += X
 
+    #print(Y)
+
+    
     print("推定距離")
-    print(SumDistance)
-    print("推定合計角度")
-    print(math.degrees(SumAngle))
+    print(Ansor_Dis)
+
     #Memo
     #加速度の単位は0.1mg(1g = 9.8m/S^2)(0.1mgは1/10000)
     #10000 = 1g
@@ -134,12 +168,13 @@ def GyroIntegral():
 
     plt.plot(t, GyroPlot)
     plt.show()
-    print(SumAngle_2)
+    print(math.degrees(SumAngle_2))
 
 def main():
-    SourcePlot()
-    #Analysis()
+    #SourcePlot()
+    Analysis()
     #GyroIntegral()
+    #Plot()
 
 if __name__ == "__main__":
     main()
