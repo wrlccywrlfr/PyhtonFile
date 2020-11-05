@@ -5,7 +5,7 @@ import math
 from scipy import signal
 from scipy.signal import find_peaks
 filename_Source = './data2/b-12.5-1.csv'
-filename = './data4_arrange/a-12.5-2.csv'
+filename = './data1_arrange/c-12.5-1.csv'
 AccX = []
 AccY = []
 AccZ = []
@@ -79,7 +79,6 @@ def Analysis(): #距離推定の計算
     Gy = 0
     Speed = 0
     SpeedValue = 0
-    S = 0
     SumSpeed = 0
     SumSp = 0
     Angle = 0
@@ -88,8 +87,8 @@ def Analysis(): #距離推定の計算
     count = 0
     Front = 0
     X = 0
-    Y = 0
     dis = 0
+    cos_1 = 0
 
     for AccValue in AccX:
         #速度計算
@@ -112,25 +111,27 @@ def Analysis(): #距離推定の計算
         SumAngle += Angle
         AngleSum.append(SumAngle)
 
-    for SpeedValue in SpeedSum:#直線の距離にして保存
+    for SpeedValue in SpeedSum:#直線の距離にして保存(ここでは誤差がある)
         Gy = AngleSum[n]
-        Sp = math.cos(Gy) * SpeedValue
+        cos_1 = abs(math.cos(Gy))
+        Sp = math.cos(Gy) * SpeedValue #直線のスピードに換算
         dis = ((Sp + OldSpeed)*TimeSpan)/2 #距離計算
-        OldSpeed = Sp
+        OldSpeed = Sp #Speed保存
         SumDistance += dis#ノイズありの直線の距離
-        DistanceFront.append(dis)
+        SpeedSum_1.append(SumDistance)#確認
+
+        DistanceFront.append(dis)#瞬間ごとの距離を格納
         n += 1
   
-    for Front in DistanceFront:
-        X = 25*(Front/SumDistance)
-        distance = X / math.cos(AngleSum[count])
-        Ansor_Dis += distance 
-        count += 1
-        Y += X
-
-    #print(Y)
-
-    
+    for Front in DistanceFront:#瞬間ごとの距離の割合から求める
+        X = 25*(Front/SumDistance)#25m*その瞬間のx軸の距離の割合
+        distance = X / math.cos(AngleSum[count])#実際の角度に戻す
+        Ansor_Dis += distance#距離加算
+        Ansor.append(Ansor_Dis)
+        count += 1#角度の配列番号の加算
+        
+    plt.plot(Ansor)
+    plt.show()    
     print("推定距離")
     print(Ansor_Dis)
 
